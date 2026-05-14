@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>Sudharshan B</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet"/>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+:root{
+  --bg:#0a0a0a;
+  --bg2:#111111;
+  --bg3:#181818;
+  --gold:#c9a84c;
+  --gold2:#f0c96a;
+  --dim:#333;
+  --muted:#555;
+  --text:#e8e4dc;
+  --text2:#999;
+  --text3:#555;
+  --line:rgba(255,255,255,0.06);
+}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'Instrument Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  overflow-x:hidden;
+  cursor:none;
+}
+.cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:difference;}
+.cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--gold);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.25s ease;mix-blend-mode:difference;opacity:0.5;}
+.grid-overlay{position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:linear-gradient(var(--line) 1px,transparent 1px),linear-gradient(90deg,var(--line) 1px,transparent 1px);
+  background-size:80px 80px;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:1.4rem 3.5rem;border-bottom:1px solid var(--line);background:rgba(10,10,10,0.9);backdrop-filter:blur(12px);}
+.nav-logo{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;letter-spacing:0.1em;color:var(--gold);}
+.nav-center{display:flex;gap:3rem;}
+.nav-center a{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text2);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;}
+.nav-center a:hover{color:var(--gold);}
+.nav-right{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text3);letter-spacing:0.05em;}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3.5rem 5rem;position:relative;z-index:1;overflow:hidden;}
+.hero-top-bar{position:absolute;top:5.5rem;left:3.5rem;right:3.5rem;display:flex;justify-content:space-between;align-items:flex-start;}
+.hero-tag{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;line-height:1.8;}
+.hero-status{display:flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--gold);letter-spacing:0.08em;}
+.status-dot{width:6px;height:6px;background:#3ddc84;border-radius:50%;animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0.2;}}
+.hero-main{position:relative;}
+.hero-name{font-family:'Bebas Neue',sans-serif;font-size:clamp(5rem,14vw,12rem);line-height:0.88;letter-spacing:0.02em;color:var(--text);}
+.hero-name-accent{color:var(--gold);}
+.hero-sub{display:flex;justify-content:space-between;align-items:flex-end;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--dim);}
+.hero-role{font-size:1rem;color:var(--text2);max-width:480px;line-height:1.65;font-weight:400;}
+.hero-role strong{color:var(--text);font-weight:600;}
+.hero-actions{display:flex;gap:1rem;align-items:center;flex-shrink:0;}
+.btn-gold{background:var(--gold);color:#000;padding:0.8rem 2rem;font-family:'Instrument Sans',sans-serif;font-size:0.85rem;font-weight:600;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;display:inline-block;}
+.btn-gold:hover{background:var(--gold2);transform:translateY(-2px);}
+.btn-ghost{border:1px solid var(--dim);color:var(--text2);padding:0.8rem 2rem;font-family:'Instrument Sans',sans-serif;font-size:0.85rem;font-weight:500;text-decoration:none;letter-spacing:0.04em;transition:all 0.2s;}
+.btn-ghost:hover{border-color:var(--gold);color:var(--gold);}
+.ticker-row{position:absolute;bottom:0;left:0;right:0;height:48px;border-top:1px solid var(--line);display:flex;overflow:hidden;}
+.ticker-item{display:flex;align-items:center;gap:2rem;padding:0 2rem;border-right:1px solid var(--line);white-space:nowrap;flex-shrink:0;font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text3);letter-spacing:0.06em;}
+.ticker-val{color:var(--gold);font-weight:400;margin-left:0.5rem;}
+.section{padding:7rem 3.5rem;position:relative;z-index:1;}
+.s-label{font-family:'JetBrains Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:1.2rem;display:flex;align-items:center;gap:1rem;}
+.s-label::after{content:'';flex:1;height:1px;background:var(--dim);}
+.s-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.5rem,5vw,4.5rem);letter-spacing:0.04em;line-height:1;color:var(--text);margin-bottom:0.5rem;}
+.s-sub{font-size:0.95rem;color:var(--text2);line-height:1.7;max-width:520px;font-weight:400;}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:4rem;align-items:start;}
+.about-para{font-size:1.05rem;color:var(--text2);line-height:1.8;font-weight:400;margin-bottom:1.5rem;}
+.about-para strong{color:var(--text);}
+.info-row{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;border-bottom:1px solid var(--line);}
+.info-key{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text3);letter-spacing:0.1em;text-transform:uppercase;}
+.info-val{font-size:0.9rem;color:var(--text);font-weight:500;}
+.info-val a{color:var(--gold);text-decoration:none;}
+.skills-section{background:var(--bg2);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+.skills-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0;margin-top:3rem;border:1px solid var(--line);}
+.skill-item{padding:2.5rem 2rem;border-right:1px solid var(--line);border-bottom:1px solid var(--line);position:relative;overflow:hidden;transition:background 0.3s;}
+.skill-item:hover{background:var(--bg3);}
+.skill-num{font-family:'Bebas Neue',sans-serif;font-size:3.5rem;color:var(--dim);line-height:1;margin-bottom:0.75rem;transition:color 0.3s;}
+.skill-item:hover .skill-num{color:var(--gold);}
+.skill-name{font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:0.35rem;}
+.skill-tags{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text3);letter-spacing:0.06em;line-height:1.8;}
+.skill-bar{height:2px;background:var(--dim);margin-top:1.5rem;}
+.skill-bar-fill{height:100%;background:var(--gold);width:0;transition:width 1s ease 0.3s;}
+.projects-section{border-top:1px solid var(--line);}
+.projects-list{margin-top:4rem;display:flex;flex-direction:column;}
+.project-row{display:grid;grid-template-columns:80px 1fr auto;align-items:center;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--line);transition:all 0.3s;cursor:default;position:relative;}
+.project-row::before{content:'';position:absolute;left:-3.5rem;right:-3.5rem;top:0;bottom:0;background:transparent;transition:background 0.3s;z-index:-1;}
+.project-row:hover::before{background:var(--bg2);}
+.project-row:hover .proj-num{color:var(--gold);}
+.proj-num{font-family:'Bebas Neue',sans-serif;font-size:2.5rem;color:var(--dim);transition:color 0.3s;}
+.proj-title{font-size:1.2rem;font-weight:600;color:var(--text);margin-bottom:0.4rem;}
+.proj-desc{font-size:0.88rem;color:var(--text2);line-height:1.6;max-width:560px;}
+.proj-tags{display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.75rem;}
+.proj-tag{font-family:'JetBrains Mono',monospace;font-size:0.65rem;padding:0.25rem 0.65rem;border:1px solid var(--dim);color:var(--text3);letter-spacing:0.06em;}
+.proj-arrow{font-size:1.5rem;color:var(--dim);transition:all 0.3s;}
+.project-row:hover .proj-arrow{color:var(--gold);transform:translate(4px,-4px);}
+.exp-section{background:var(--bg2);border-top:1px solid var(--line);}
+.exp-grid{margin-top:4rem;display:flex;flex-direction:column;}
+.exp-row{display:grid;grid-template-columns:160px 1fr 160px;gap:3rem;padding:2.5rem 0;border-bottom:1px solid var(--line);}
+.exp-date{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text3);letter-spacing:0.06em;line-height:1.8;padding-top:0.2rem;}
+.exp-role{font-size:1.05rem;font-weight:600;color:var(--text);margin-bottom:0.3rem;}
+.exp-org{font-size:0.85rem;color:var(--gold);margin-bottom:0.75rem;font-weight:500;}
+.exp-desc{font-size:0.87rem;color:var(--text2);line-height:1.65;}
+.exp-type{text-align:right;}
+.exp-badge{font-family:'JetBrains Mono',monospace;font-size:0.62rem;padding:0.3rem 0.8rem;letter-spacing:0.1em;text-transform:uppercase;display:inline-block;}
+.badge-active{border:1px solid var(--gold);color:var(--gold);}
+.badge-edu{border:1px solid var(--dim);color:var(--text3);}
+.contact-section{border-top:1px solid var(--line);min-height:60vh;display:flex;align-items:center;}
+.contact-big{font-family:'Bebas Neue',sans-serif;font-size:clamp(3rem,9vw,8rem);line-height:0.9;letter-spacing:0.02em;color:var(--text);margin:2rem 0 3rem;}
+.contact-big span{color:var(--gold);}
+.contact-row{display:flex;gap:1rem;flex-wrap:wrap;align-items:center;}
+.contact-link{display:inline-flex;align-items:center;gap:0.6rem;padding:0.9rem 2rem;font-family:'JetBrains Mono',monospace;font-size:0.72rem;letter-spacing:0.1em;text-transform:uppercase;text-decoration:none;transition:all 0.2s;}
+.cl-primary{background:var(--gold);color:#000;}
+.cl-primary:hover{background:var(--gold2);}
+.cl-secondary{border:1px solid var(--dim);color:var(--text2);}
+.cl-secondary:hover{border-color:var(--gold);color:var(--gold);}
+footer{border-top:1px solid var(--line);padding:1.5rem 3.5rem;display:flex;justify-content:space-between;align-items:center;z-index:1;position:relative;}
+.footer-copy{font-family:'JetBrains Mono',monospace;font-size:0.65rem;color:var(--text3);letter-spacing:0.06em;}
+.reveal{opacity:0;transform:translateY(24px);transition:opacity 0.8s ease,transform 0.8s ease;}
+.reveal.in{opacity:1;transform:translateY(0);}
+@media(max-width:900px){
+  nav{padding:1rem 1.5rem;}
+  .nav-center{display:none;}
+  .hero{padding:0 1.5rem 4rem;}
+  .hero-top-bar{left:1.5rem;right:1.5rem;}
+  .hero-sub{flex-direction:column;gap:2rem;align-items:flex-start;}
+  .section{padding:5rem 1.5rem;}
+  .about-grid{grid-template-columns:1fr;gap:3rem;}
+  .skills-grid{grid-template-columns:1fr 1fr;}
+  .project-row{grid-template-columns:60px 1fr;gap:1.5rem;}
+  .proj-arrow{display:none;}
+  .exp-row{grid-template-columns:1fr;gap:0.5rem;}
+  .exp-type{text-align:left;}
+  footer{padding:1.5rem;flex-direction:column;gap:0.5rem;text-align:center;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cur"></div>
+<div class="cursor-ring" id="ring"></div>
+<div class="grid-overlay"></div>
+
+<nav>
+  <div class="nav-logo">S.B</div>
+  <div class="nav-center">
+    <a href="#about">About</a>
+    <a href="#skills">Skills</a>
+    <a href="#projects">Projects</a>
+    <a href="#experience">Experience</a>
+    <a href="#contact">Contact</a>
+  </div>
+  <div class="nav-right">GH&nbsp;/&nbsp;IN · INDIA</div>
+</nav>
+
+<section class="hero">
+  <div class="hero-top-bar">
+    <div class="hero-tag">
+      Full Stack Engineer<br>
+      Based in Rajahmundry, India
+    </div>
+    <div class="hero-status">
+      <span class="status-dot"></span>
+      Open to Opportunities
+    </div>
+  </div>
+  <div class="hero-main reveal">
+    <div class="hero-name">SUDHARSHAN<br><span class="hero-name-accent">B.</span></div>
+    <div class="hero-sub">
+      <p class="hero-role">
+        <strong>Aspiring Full Stack Engineer</strong> building scalable web applications with
+        Java, Spring Boot, React &amp; TypeScript. Currently architecting a
+        <strong>Compensation Intelligence System</strong> — where data meets engineering.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-gold">View Work</a>
+        <a href="#contact" class="btn-ghost">Say Hello</a>
+      </div>
+    </div>
+  </div>
+  <div class="ticker-row">
+    <div class="ticker-item">Stack <span class="ticker-val">Java · Spring Boot · React · Node.js · TypeScript</span></div>
+    <div class="ticker-item">Institution <span class="ticker-val">ACET Surampalem</span></div>
+    <div class="ticker-item">Graduation <span class="ticker-val">2027</span></div>
+    <div class="ticker-item">Currently Building <span class="ticker-val">Compensation Intelligence System</span></div>
+  </div>
+</section>
+
+<section id="about" class="section reveal">
+  <div class="s-label">001 &nbsp; About</div>
+  <div class="s-title">THE ENGINEER</div>
+  <div class="about-grid">
+    <div class="about-left">
+      <p class="about-para">I'm <strong>Sudharshan B.</strong>, a Computer Science student at Aditya College of Engineering &amp; Technology, Surampalem — obsessed with building software that actually matters.</p>
+      <p class="about-para">My stack spans the full layer — from <strong>Spring Boot microservices</strong> on the backend to <strong>React &amp; TypeScript</strong> interfaces on the front. I care deeply about clean architecture, readable code, and systems that scale.</p>
+      <p class="about-para">Right now I'm channeling that energy into a <strong>Compensation Intelligence System</strong> — a platform that brings transparency and data intelligence to how companies and individuals think about salary and equity.</p>
+    </div>
+    <div class="about-right">
+      <div class="info-row"><span class="info-key">Email</span><span class="info-val"><a href="mailto:sudarshanbetha2004@gmail.com">sudarshanbetha2004@gmail.com</a></span></div>
+      <div class="info-row"><span class="info-key">LinkedIn</span><span class="info-val"><a href="https://www.linkedin.com/in/sudharshanb-a2a5082b6" target="_blank">sudharshanb-a2a5082b6</a></span></div>
+      <div class="info-row"><span class="info-key">Phone</span><span class="info-val">+91 9052665559</span></div>
+      <div class="info-row"><span class="info-key">Location</span><span class="info-val">Rajahmundry, Andhra Pradesh, India</span></div>
+      <div class="info-row"><span class="info-key">Degree</span><span class="info-val">B.Tech Computer Science</span></div>
+      <div class="info-row"><span class="info-key">Graduating</span><span class="info-val">2027</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="section skills-section">
+  <div class="s-label">002 &nbsp; Skills</div>
+  <div class="s-title">TECH ARSENAL</div>
+  <p class="s-sub">A full-stack toolkit designed for production-grade, scalable systems.</p>
+  <div class="skills-grid reveal">
+    <div class="skill-item">
+      <div class="skill-num">01</div>
+      <div class="skill-name">Java &amp; Spring Boot</div>
+      <div class="skill-tags">REST APIs · Microservices · Spring Security · JPA/Hibernate</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="90%"></div></div>
+    </div>
+    <div class="skill-item">
+      <div class="skill-num">02</div>
+      <div class="skill-name">React &amp; Frontend</div>
+      <div class="skill-tags">React.js · Next.js · TypeScript · Tailwind CSS · Redux</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="85%"></div></div>
+    </div>
+    <div class="skill-item" style="border-right:none;">
+      <div class="skill-num">03</div>
+      <div class="skill-name">Node.js &amp; TypeScript</div>
+      <div class="skill-tags">Express.js · REST · WebSockets · JWT Auth · Type Safety</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="80%"></div></div>
+    </div>
+    <div class="skill-item" style="border-bottom:none;">
+      <div class="skill-num">04</div>
+      <div class="skill-name">Databases</div>
+      <div class="skill-tags">MySQL · PostgreSQL · MongoDB · Redis · Query Optimization</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="78%"></div></div>
+    </div>
+    <div class="skill-item" style="border-bottom:none;">
+      <div class="skill-num">05</div>
+      <div class="skill-name">DevOps &amp; Tooling</div>
+      <div class="skill-tags">Git · Docker · Maven · Gradle · CI/CD · Linux</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="72%"></div></div>
+    </div>
+    <div class="skill-item" style="border-right:none;border-bottom:none;">
+      <div class="skill-num">06</div>
+      <div class="skill-name">System Design</div>
+      <div class="skill-tags">Architecture · Scalability · Data Modeling · API Design</div>
+      <div class="skill-bar"><div class="skill-bar-fill" data-width="75%"></div></div>
+    </div>
+  </div>
+</section>
+
+<section id="projects" class="section projects-section">
+  <div class="s-label">003 &nbsp; Projects</div>
+  <div class="s-title">SELECTED WORK</div>
+  <p class="s-sub">Systems built to solve real problems — from intelligence platforms to scalable services.</p>
+  <div class="projects-list reveal">
+    <div class="project-row">
+      <div class="proj-num">01</div>
+      <div class="proj-body">
+        <div class="proj-title">Compensation Intelligence System</div>
+        <div class="proj-desc">A data-driven intelligence platform that benchmarks salaries, equity structures, and compensation trends across industries. Designed to empower both employers and candidates with transparency and market-aligned data.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Java</span>
+          <span class="proj-tag">Spring Boot</span>
+          <span class="proj-tag">React</span>
+          <span class="proj-tag">MySQL</span>
+          <span class="proj-tag">Data Analytics</span>
+        </div>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+    <div class="project-row">
+      <div class="proj-num">02</div>
+      <div class="proj-body">
+        <div class="proj-title">Full-Stack E-Commerce Platform</div>
+        <div class="proj-desc">Scalable shopping platform with real-time inventory management, secure JWT authentication, Stripe payment integration, and a feature-rich admin dashboard. Built for performance at scale.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Node.js</span>
+          <span class="proj-tag">TypeScript</span>
+          <span class="proj-tag">React</span>
+          <span class="proj-tag">MongoDB</span>
+          <span class="proj-tag">JWT</span>
+        </div>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+    <div class="project-row">
+      <div class="proj-num">03</div>
+      <div class="proj-body">
+        <div class="proj-title">Student Management REST API</div>
+        <div class="proj-desc">Production-ready RESTful backend with role-based access control, full CRUD operations, Swagger documentation, and comprehensive test coverage — built to serve academic institution workflows.</div>
+        <div class="proj-tags">
+          <span class="proj-tag">Spring Boot</span>
+          <span class="proj-tag">Java</span>
+          <span class="proj-tag">MySQL</span>
+          <span class="proj-tag">Swagger</span>
+          <span class="proj-tag">JUnit</span>
+        </div>
+      </div>
+      <div class="proj-arrow">↗</div>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="section exp-section">
+  <div class="s-label">004 &nbsp; Experience</div>
+  <div class="s-title">JOURNEY SO FAR</div>
+  <div class="exp-grid reveal">
+    <div class="exp-row">
+      <div class="exp-date">Jul 2025<br>→ Present<br>(11 months)</div>
+      <div class="exp-body">
+        <div class="exp-role">Student Partner</div>
+        <div class="exp-org">Micro Information Technology Services</div>
+        <div class="exp-desc">Contributing to real-world software projects alongside industry professionals. Gaining hands-on exposure to production development workflows, agile methodologies, and enterprise software engineering practices.</div>
+      </div>
+      <div class="exp-type"><span class="exp-badge badge-active">Active</span></div>
+    </div>
+    <div class="exp-row">
+      <div class="exp-date">2021<br>→ 2027</div>
+      <div class="exp-body">
+        <div class="exp-role">B.Tech — Computer Science Engineering</div>
+        <div class="exp-org">Aditya College of Engineering &amp; Technology, Hyderabad</div>
+        <div class="exp-desc">Rigorous CS fundamentals covering data structures, algorithms, OS, DBMS, networks, and software engineering. Supplemented with hands-on projects and independent building of full-stack systems throughout the program.</div>
+      </div>
+      <div class="exp-type"><span class="exp-badge badge-edu">Education</span></div>
+    </div>
+    <div class="exp-row">
+      <div class="exp-date">Ongoing</div>
+      <div class="exp-body">
+        <div class="exp-role">Independent Builder</div>
+        <div class="exp-org">Self-Directed</div>
+        <div class="exp-desc">Continuously shipping personal projects — designing architectures, writing code, and deploying systems that push the boundary of what a student can build. From compensation platforms to API services, always building.</div>
+      </div>
+      <div class="exp-type"><span class="exp-badge badge-edu">Personal</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="contact" class="section contact-section reveal">
+  <div style="width:100%;">
+    <div class="s-label">005 &nbsp; Contact</div>
+    <div class="contact-big">LET'S<br>BUILD<br><span>TOGETHER.</span></div>
+    <div class="contact-row">
+      <a href="mailto:sudarshanbetha2004@gmail.com" class="contact-link cl-primary">✉ &nbsp; Email Me</a>
+      <a href="https://www.linkedin.com/in/sudharshanb-a2a5082b6" class="contact-link cl-secondary" target="_blank">in &nbsp; LinkedIn</a>
+      <a href="tel:+919052665559" class="contact-link cl-secondary">☎ &nbsp; +91 9052665559</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-copy">© 2025 Sudharshan B. · Hyderabad, India</div>
+  <div class="footer-copy">Full Stack Engineer · Open to Work</div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cur.style.left=mx-4+'px';cur.style.top=my-4+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx-18+'px';ring.style.top=ry-18+'px';
+  requestAnimationFrame(animRing);
+}animRing();
+document.querySelectorAll('a,button').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{ring.style.transform='scale(1.6)';cur.style.transform='scale(0.5)';});
+  el.addEventListener('mouseleave',()=>{ring.style.transform='scale(1)';cur.style.transform='scale(1)';});
+});
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('in');});
+},{threshold:0.12});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+const skillObs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.querySelectorAll('.skill-bar-fill').forEach(b=>{
+        const w=b.getAttribute('data-width')||'75%';
+        b.style.width='0';
+        setTimeout(()=>{b.style.width=w;},150);
+      });
+      skillObs.unobserve(e.target);
+    }
+  });
+},{threshold:0.2});
+document.querySelectorAll('.skills-grid').forEach(el=>skillObs.observe(el));
+</script>
+</body>
+</html>

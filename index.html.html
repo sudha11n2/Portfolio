@@ -25,7 +25,7 @@ body{
   font-family:'Instrument Sans',sans-serif;
   background:var(--bg);
   color:var(--text);
-  overflow-x:visible;
+  overflow-x:hidden;
   cursor:none;
 }
 .cursor{position:fixed;width:8px;height:8px;background:var(--gold);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.15s ease;mix-blend-mode:difference;}
@@ -39,7 +39,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;justify-content
 .nav-center a{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text2);text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;transition:color 0.2s;}
 .nav-center a:hover{color:var(--gold);}
 .nav-right{font-family:'JetBrains Mono',monospace;font-size:0.7rem;color:var(--text3);letter-spacing:0.05em;}
-.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;padding:6 3.5rem 5rem;position:relative;z-index:1;overflow:visible;}
+.hero{min-height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 3.5rem 5rem;position:relative;z-index:1;overflow:hidden;}
 .hero-top-bar{position:absolute;top:5.5rem;left:3.5rem;right:3.5rem;display:flex;justify-content:space-between;align-items:flex-start;}
 .hero-tag{font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--text3);letter-spacing:0.12em;text-transform:uppercase;line-height:1.8;}
 .hero-status{display:flex;align-items:center;gap:0.5rem;font-family:'JetBrains Mono',monospace;font-size:0.68rem;color:var(--gold);letter-spacing:0.08em;}
